@@ -268,9 +268,6 @@ sudo systemctl start logstash
 
 Pourquoi Filebeat ? Filebeat est un agent léger qui collecte les fichiers de logs et les envoie à Logstash ou directement à Elasticsearch. Il consomme très peu de ressources et est conçu pour tourner sur chaque serveur dont vous souhaitez centraliser les logs.
 
-```
-
-
 ```bash
 sudo apt install -y filebeat
 ```
@@ -315,8 +312,10 @@ Assurez-vous qu'elles sont activées (enabled: true) :
     enabled: true
   auth:
     enabled: true
+```
 
 **Étape 7.2 — Activer le module système et charger les dashboards :**
+
 ```bash
 sudo filebeat modules enable system
 sudo filebeat setup --dashboards
@@ -328,22 +327,7 @@ sudo systemctl start filebeat
 
 ## 8. Vérifier que tout fonctionne
 
-```bash
-# Elasticsearch
-curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:VOTRE_MOT_DE_PASSE https://localhost:9200
-
-# Kibana  (doit répondre HTTP 200)
-curl -s -o /dev/null -w "%{http_code}" http://localhost:5601/api/status
-
-# Logstash
-curl http://localhost:9600?pretty
-
-# Filebeat
-sudo systemctl status filebeat
-```
-Dans Kibana : accédez à http://localhost:5601, puis allez dans Stack Management > Index Management. Vous devriez voir des index syslog-YYYY.MM.dd ou filebeat-* apparaître si les logs sont correctement acheminés.
-
-Rendez-vous ensuite dans Discover pour explorer vos premiers logs en temps réel.
+Dans Kibana : accédez à http://localhost:5601, puis rendez-vous ensuite dans Discover pour explorer vos premiers logs en temps réel.
 
 Si vous voyez des données dans Kibana, votre stack ELK est opérationnelle. Vous pouvez désormais centraliser les logs de tous vos serveurs en installant Filebeat sur chacun d'entre eux.
 
